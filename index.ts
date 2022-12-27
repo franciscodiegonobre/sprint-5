@@ -22,16 +22,3 @@ fetch(api_url, headerApi)
         console.log(response.joke)
 }).catch(error => console.error("Something went wrong ->", error))
 }
-
-
-/* const maintext = document.getElementById("maintext") */
-/* function fetchJoke() {
-    fetch(api_url, headerApi)
-        .then((res) => res.json())
-        .then(response => {
-            let paragraph = document.createElement("p")
-            paragraph.innerHTML = response.joke
-            maintext?.appendChild(paragraph)
-            console.log(response.joke)
-    }).catch(error => console.error("Something went wrong ->", error))
-    } */
