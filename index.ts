@@ -48,6 +48,11 @@ function createReport(joke: string) {
 //function to assign the score and the date to the last joke object, which is the one the user is 
 //currently seeing, if the user decides to vote
 function rateJoke(rate: string) {
+    if (reportAcudits.length < 1) {
+        alert("Click the button first in order to rate a joke");
+        throw Error("Nothing to be rated yet")
+    }
+    
     if (rate === "funnyJoke") {
         reportAcudits[reportAcudits.length - 1].score = 3 
         reportAcudits[reportAcudits.length - 1].date = new Date().toISOString() 
