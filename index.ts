@@ -5,6 +5,7 @@ document?.getElementById("funnyJoke")?.addEventListener("click", (evt) => rateJo
 document?.getElementById("okJoke")?.addEventListener("click", (evt) => rateJoke("okJoke"));
 document?.getElementById("badJoke")?.addEventListener("click", (evt) => rateJoke("badJoke"));
 
+//variables
 const joketext = document.getElementById("joketext")
 const api_url: string = "https://icanhazdadjoke.com"
 type jokeObject = {
@@ -14,7 +15,7 @@ type jokeObject = {
 };
 let reportAcudits: jokeObject[] = []
 
-//headers needed to get a response from the joke API
+//headers needed to get a response from the jokes APIs
 const headerApi: {} = {
     method: "GET",
     headers: {
@@ -22,16 +23,44 @@ const headerApi: {} = {
     }
 }
 
-//function to get the joke from the API and insert it as text in html. It also passes the fetched joke
+const options = {
+	method: 'GET',
+	headers: {
+		accept: 'application/json',
+		'X-RapidAPI-Key': 'fdd42d7708mshee83b24086db7c2p13b3c7jsn267f1b80eeca',
+		'X-RapidAPI-Host': 'matchilling-chuck-norris-jokes-v1.p.rapidapi.com'
+	}
+};
+
+//functions to get random jokes from the APIs and insert them as text in html. It also passes the fetched joke
 //to createReport function
+function getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+}
+
 function fetchJoke() {
-fetch(api_url, headerApi)
-    .then((res) => res.json())
-    .then(response => {
-        joketext!.textContent = `"${response.joke}"`
-        console.log(response.joke)
-        createReport(response.joke)
-}).catch(error => console.error("Something went wrong ->", error))
+
+    let randomNumber = getRandomInt(2)
+
+        if (randomNumber === 0) {
+            fetch(api_url, headerApi)
+            .then((res) => res.json())
+            .then(response => {
+            joketext!.textContent = `"${response.joke}"`
+            console.log(response.joke)
+            createReport(response.joke)
+    }).catch(error => console.error("Something went wrong ->", error))
+    }
+    
+        if (randomNumber === 1) {
+            fetch('https://matchilling-chuck-norris-jokes-v1.p.rapidapi.com/jokes/random', options)
+            .then(response => response.json())
+            .then(response => {
+            joketext!.textContent = `"${response.value}"`
+            console.log(response.value)
+            createReport(response.value)
+    }).catch(err => console.error(err));
+    }
 }
 
 //function to create a joke object with the current joke and insert it in the reportAcudits array
@@ -72,7 +101,7 @@ function rateJoke(rate: string) {
 
 //code related to the weather API request and text insertion in the HTML
 const weatherText = document.getElementById("weather")
-const options = {
+const weatherHeader = {
 	method: 'GET',
 	headers: {
 		'X-RapidAPI-Key': 'fdd42d7708mshee83b24086db7c2p13b3c7jsn267f1b80eeca',
@@ -80,7 +109,7 @@ const options = {
 	}
 };
 
-fetch('https://aerisweather1.p.rapidapi.com/observations/barcelona,%20es', options)
+fetch('https://aerisweather1.p.rapidapi.com/observations/barcelona,%20es', weatherHeader)
 	.then(response => response.json())
 	.then(response => weatherText!.textContent = `Today: ${response.response.ob.weather}`)
 	.catch(err => console.error(err));

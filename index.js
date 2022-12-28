@@ -5,26 +5,50 @@ exports.__esModule = true;
 (_b = document === null || document === void 0 ? void 0 : document.getElementById("funnyJoke")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", function (evt) { return rateJoke("funnyJoke"); });
 (_c = document === null || document === void 0 ? void 0 : document.getElementById("okJoke")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", function (evt) { return rateJoke("okJoke"); });
 (_d = document === null || document === void 0 ? void 0 : document.getElementById("badJoke")) === null || _d === void 0 ? void 0 : _d.addEventListener("click", function (evt) { return rateJoke("badJoke"); });
+//variables
 var joketext = document.getElementById("joketext");
 var api_url = "https://icanhazdadjoke.com";
 var reportAcudits = [];
-//headers needed to get a response from the joke API
+//headers needed to get a response from the jokes APIs
 var headerApi = {
     method: "GET",
     headers: {
         "Accept": "application/json"
     }
 };
-//function to get the joke from the API and insert it as text in html. It also passes the fetched joke
+var options = {
+    method: 'GET',
+    headers: {
+        accept: 'application/json',
+        'X-RapidAPI-Key': 'fdd42d7708mshee83b24086db7c2p13b3c7jsn267f1b80eeca',
+        'X-RapidAPI-Host': 'matchilling-chuck-norris-jokes-v1.p.rapidapi.com'
+    }
+};
+//functions to get random jokes from the APIs and insert them as text in html. It also passes the fetched joke
 //to createReport function
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
 function fetchJoke() {
-    fetch(api_url, headerApi)
-        .then(function (res) { return res.json(); })
-        .then(function (response) {
-        joketext.textContent = "\"".concat(response.joke, "\"");
-        console.log(response.joke);
-        createReport(response.joke);
-    })["catch"](function (error) { return console.error("Something went wrong ->", error); });
+    var randomNumber = getRandomInt(2);
+    if (randomNumber === 0) {
+        fetch(api_url, headerApi)
+            .then(function (res) { return res.json(); })
+            .then(function (response) {
+            joketext.textContent = "\"".concat(response.joke, "\"");
+            console.log(response.joke);
+            createReport(response.joke);
+        })["catch"](function (error) { return console.error("Something went wrong ->", error); });
+    }
+    if (randomNumber === 1) {
+        fetch('https://matchilling-chuck-norris-jokes-v1.p.rapidapi.com/jokes/random', options)
+            .then(function (response) { return response.json(); })
+            .then(function (response) {
+            joketext.textContent = "\"".concat(response.value, "\"");
+            console.log(response.value);
+            createReport(response.value);
+        })["catch"](function (err) { return console.error(err); });
+    }
 }
 //function to create a joke object with the current joke and insert it in the reportAcudits array
 function createReport(joke) {
@@ -58,13 +82,13 @@ function rateJoke(rate) {
 }
 //code related to the weather API request and text insertion in the HTML
 var weatherText = document.getElementById("weather");
-var options = {
+var weatherHeader = {
     method: 'GET',
     headers: {
         'X-RapidAPI-Key': 'fdd42d7708mshee83b24086db7c2p13b3c7jsn267f1b80eeca',
         'X-RapidAPI-Host': 'aerisweather1.p.rapidapi.com'
     }
 };
-fetch('https://aerisweather1.p.rapidapi.com/observations/barcelona,%20es', options)
+fetch('https://aerisweather1.p.rapidapi.com/observations/barcelona,%20es', weatherHeader)
     .then(function (response) { return response.json(); })
     .then(function (response) { return weatherText.textContent = "Today: ".concat(response.response.ob.weather); })["catch"](function (err) { return console.error(err); });
