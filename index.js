@@ -8,7 +8,7 @@ exports.__esModule = true;
 var joketext = document.getElementById("joketext");
 var api_url = "https://icanhazdadjoke.com";
 var reportAcudits = [];
-//headers needed to get a response from the API
+//headers needed to get a response from the joke API
 var headerApi = {
     method: "GET",
     headers: {
@@ -56,3 +56,15 @@ function rateJoke(rate) {
     }
     console.log(reportAcudits);
 }
+//code related to the weather API request and text insertion in the HTML
+var weatherText = document.getElementById("weather");
+var options = {
+    method: 'GET',
+    headers: {
+        'X-RapidAPI-Key': 'fdd42d7708mshee83b24086db7c2p13b3c7jsn267f1b80eeca',
+        'X-RapidAPI-Host': 'aerisweather1.p.rapidapi.com'
+    }
+};
+fetch('https://aerisweather1.p.rapidapi.com/observations/barcelona,%20es', options)
+    .then(function (response) { return response.json(); })
+    .then(function (response) { return weatherText.textContent = "Today: ".concat(response.response.ob.weather); })["catch"](function (err) { return console.error(err); });

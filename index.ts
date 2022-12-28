@@ -14,7 +14,7 @@ type jokeObject = {
 };
 let reportAcudits: jokeObject[] = []
 
-//headers needed to get a response from the API
+//headers needed to get a response from the joke API
 const headerApi: {} = {
     method: "GET",
     headers: {
@@ -69,4 +69,20 @@ function rateJoke(rate: string) {
     }
     console.log(reportAcudits)
 }
+
+//code related to the weather API request and text insertion in the HTML
+const weatherText = document.getElementById("weather")
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': 'fdd42d7708mshee83b24086db7c2p13b3c7jsn267f1b80eeca',
+		'X-RapidAPI-Host': 'aerisweather1.p.rapidapi.com'
+	}
+};
+
+fetch('https://aerisweather1.p.rapidapi.com/observations/barcelona,%20es', options)
+	.then(response => response.json())
+	.then(response => weatherText!.textContent = `Today: ${response.response.ob.weather}`)
+	.catch(err => console.error(err));
+
 
